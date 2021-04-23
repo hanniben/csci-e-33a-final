@@ -1,0 +1,28 @@
+{% extends "game/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <div id="game-view" data-position="{{game.position}}"></div>
+
+    <h1>{{ game }}</h1>
+
+
+    <div class="grid-container" data-game-id="{{game.id}}">
+        {% for square in game.squares %}
+
+        <div class="grid-item square{{square}}" data-square="{{forloop.counter}}">
+            {% csrf_token %}
+            <button>{{ square }}</button>
+        </div>
+
+        {% endfor %}
+    </div>
+
+{% endblock %}
+
+{% block script %}
+
+    <script src="{% static 'game/game.js' %}"></script>
+
+{% endblock %}
