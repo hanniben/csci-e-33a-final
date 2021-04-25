@@ -20,7 +20,7 @@ class Square(models.Model):
 class Game(models.Model):
     player = models.ForeignKey(User, on_delete=models.PROTECT, related_name='games', blank=False)
     timestamp = models.DateTimeField(blank=True, null=True)
-    position = models.CharField(max_length=2, default='A0', blank=False)
+    position = models.IntegerField(default=1, blank=False)
     squares = models.CharField(max_length=100, default='0'*100, blank=False)
     
     def __str__(self):

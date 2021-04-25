@@ -64,9 +64,10 @@ def move(request, id):
 
         index = data.get("squareId", "")
         type_ = data.get("type", "")
+        print(type_)
 
         if type_ == 1 or type_ == 4:
-            game.position = "1"
+            game.position = 1
             type_list[index - 1] = 4
 
         else:
