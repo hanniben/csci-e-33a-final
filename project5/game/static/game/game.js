@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             // Get previous position
             let position = parseInt(document.querySelector('#game-view').dataset.position)
+
             // Get above square if any
             let above, below, left, right = 0
             if (position >= 11) {
@@ -40,33 +41,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(response => response.json())
                 .then(data => {
+                    document.querySelector('[data-square="' + position + '"] button').innerHTML = ''
+                    document.querySelector('[data-square="' + data.position + '"] button').innerHTML = '<img id="player-icon">'
+
                     // update position
                     document.querySelector('#game-view').dataset.position = data.position
                     this.parentNode.classList.remove(this.parentNode.classList[1])
                     this.parentNode.classList.add('square' + data.type)
-                    this.innerHTML = data.type
                 });
             }
         })
     })
 
 
-            // fetch(`/move/${gridId}`, {
-            //     method:'PUT',
-            //     headers:{"X-CSRFToken":token},
-            //     body: JSON.stringify({
-            //         squareId: below,
-            //         type: this.parentNode.classList[1].charAt(6)
-            //     })
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     // update position
-            //     position = data.position
-            //     this.parentNode.classList.remove(this.parentNode.classList[1])
-            //     this.parentNode.classList.add('square' + data.type)
-            //     this.innerHTML = data.type
-            // });
 
 
 })

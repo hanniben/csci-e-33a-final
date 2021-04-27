@@ -13,7 +13,7 @@
 
         <div class="grid-item square{{square}}" data-square="{{forloop.counter}}">
             {% csrf_token %}
-            <button>{{ square }}</button>
+            <button>{% if game.position == forloop.counter %}<img id="player-icon">{% endif %}</button>
         </div>
 
         {% endfor %}

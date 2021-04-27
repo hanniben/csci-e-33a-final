@@ -12,7 +12,12 @@ from .models import User, Game, Square, Row
 
 
 def index(request):
-    return render(request, "game/index.html")
+    # Filter by game player
+    games = Game.objects.filter(player__username=request.user)
+
+    return render(request, "game/index.html", {
+        "games":games
+    })
 
 
 def new_game(request):
@@ -20,10 +25,18 @@ def new_game(request):
         grid_type=[]
         for x in range(10):
             
+            # Create array of 10 for each grid row
             row_type = [0] * 10
+            
+            # If first row, set first space to visited type 3
+            if x == 0:
+                row_type[0] = 3
+
+            # Add hole squares as type 1
             if x in [2,4,6,8]:
                 row_type[random.randint(0,9)] = 1
 
+            # Add key squares as type 2
             while True:
                 y = random.randint(0,9)
                 if row_type[y] == 0:
@@ -61,10 +74,10 @@ def move(request, id):
         game = Game.objects.get(pk=id)
         data = json.loads(request.body)
         type_list = list(game.squares)
+        key_list = list(game.keys)
 
         index = data.get("squareId", "")
         type_ = data.get("type", "")
-        print(type_)
 
         if type_ == 1 or type_ == 4:
             game.position = 1
@@ -73,6 +86,12 @@ def move(request, id):
         else:
             game.position = index
             type_list[index - 1] = 3
+
+            if type_ == 2:
+                # Subtract 1 to make base 0 and integer divide
+                key = (index - 1) // 10
+                key_list[key] = 1
+                game.keys = "".join(list(map(str,key_list)))
 
         game.squares = "".join(list(map(str,type_list)))
         game.save()
