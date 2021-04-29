@@ -1,28 +1,40 @@
 import json
+import random
 
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
-
-import random
+from django.utils import timezone
 
 from .models import User, Game, Square, Row
 
 
 def index(request):
-    # Filter by game player
-    games = Game.objects.filter(player__username=request.user)
+    # Filter unfinished games by player
+    games = Game.objects.filter(player__username=request.user).filter(timestamp_won__isnull=True)
+
+    if games != '':
+        games = games.order_by("-timestamp_save").all()
+
+    won_games = Game.objects.filter(timestamp_won__isnull=False)
+    if won_games != '':
+        won_games = won_games.order_by("-timestamp_save").all()
+
 
     return render(request, "game/index.html", {
-        "games":games
+        "games":games,
+        "won":won_games
     })
 
 
 def new_game(request):
     if request.user.is_authenticated:
+        # Set grid_type as empty list
         grid_type=[]
+
+        # Loop for 10 rows
         for x in range(10):
             
             # Create array of 10 for each grid row
@@ -38,11 +50,19 @@ def new_game(request):
 
             # Add key squares as type 2
             while True:
-                y = random.randint(0,9)
+                # If last row, random key placement between 0 and 8 to make sure key is not in last square
+                if x == 9:
+                    y = random.randint(0,8)
+                # Else random key placement between 0 and 9
+                else:
+                    y = random.randint(0,9)
+
+                # Add key if square is empty
                 if row_type[y] == 0:
                     row_type[y] = 2
                     break
 
+            # Append all row types
             grid_type.extend(row_type)
 
         new_game = Game(
@@ -93,11 +113,15 @@ def move(request, id):
                 key_list[key] = 1
                 game.keys = "".join(list(map(str,key_list)))
 
+        if index == 100 and game.keys == "1111111111":
+            game.timestamp_won = timezone.now()
+
         game.squares = "".join(list(map(str,type_list)))
+        game.timestamp_save = timezone.now()
         game.save()
 
     # Return new post text
-    return JsonResponse({"position": game.position, "type":game.squares[index-1]}, safe=False)
+    return JsonResponse({"position": game.position, "type":game.squares[index-1], "keys":game.keys, "won":game.timestamp_won}, safe=False)
 
 
 

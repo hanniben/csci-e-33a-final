@@ -1,38 +1,72 @@
-.grid-container {
+.row {
+  margin: 0px;
+}
+
+@media (min-width: 600px) {
+  .row {
+    display: flex;
+  }
+}
+
+@media (max-width: 599px) {
+  .row {
+      display: grid;
+  }
+}
+
+body, head, a {
+  background-color: #276ebd;
+  color: white;
+  text-align: center;
+}
+
+text {
+  font: helvetica, sans-serif;
+}
+
+a:hover {
+  text-decoration: none;
+  color: yellow;
+}
+
+.grid-game, .grid-keys {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
-    background-color: #2196F3;
-    margin: 0 5vw;
-    width: 90vw;
-    height: 90vw;
   }
   
 .grid-item {
   display: grid;
-  background-color: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.8);
-  width: 9vw;
-  height: 9vw;
+  position: relative;
+  padding-bottom: 100%;
 }
 
-.grid-item button, img{
-  width: 9vw;
-  height: 9vw;
+.grid-item button, .grid-item svg {
+  width: 100%;
+  height: 100%;
   border: none;
   background: none;
-  padding: 0px;
+  position: absolute;
 }
 
 .square0, .square1, .square2 {
   background-color: green;
 }
 
-.square3, .square4, .square5 {
+.square3 {
   background-color: brown;
+}
+
+.square4 {
+  background-color: black;
 }
 
 #game-list {
   display: block;
+  border: 2px solid white;
+  margin: 5px auto;
+  padding: 0 5px;
+  width: max-content;
 }
 
 #game-list > div {
@@ -41,5 +75,5 @@
 
 #player-icon {
   background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
-  background-size: 9vw;
+  background-size: cover;
 }

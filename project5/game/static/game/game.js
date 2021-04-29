@@ -1,10 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    if (document.querySelector('#game-view')) {
+        token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+    }
 
    // Show game view
     document.querySelector('#game-view').style.display = 'block';
-    const gridId = document.querySelector('.grid-container').dataset.gameId
+    const gridId = document.querySelector('.grid-game').dataset.gameId
+    let gameWon = document.querySelector('#game-view').dataset.won
 
 
     document.querySelectorAll('.grid-item button').forEach(button => {
@@ -30,23 +33,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 right = position + 1
             }
 
-            if([above, below, left, right].includes(parseInt(this.parentNode.dataset.square))) {
+            if([above, below, left, right].includes(parseInt(this.parentNode.dataset.square)) && (gameWon == 'None')) {
+                const moveType = parseInt(this.parentNode.classList[1].charAt(6))
                 fetch(`/move/${gridId}`, {
                     method:'PUT',
                     headers:{"X-CSRFToken":token},
                     body: JSON.stringify({
                         squareId: parseInt(this.parentNode.dataset.square),
-                        type: parseInt(this.parentNode.classList[1].charAt(6))
+                        type: moveType
                     })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    document.querySelector('[data-square="' + position + '"] button').innerHTML = ''
-                    document.querySelector('[data-square="' + data.position + '"] button').innerHTML = '<img id="player-icon">'
+                    if ([1, 4].includes(moveType)) {
+                        alert('There is a hole in the floor! You fell through and have to start from the beginning.')
+                    }
+                    if (moveType == 2) {
+                        alert('You found a key!')
+                        document.querySelectorAll('.grid-keys div.grid-item').forEach(key => {
+                            if (data.keys.charAt(key.dataset.key-1) == 1) {
+                                document.querySelector('[data-key="' + key.dataset.key + '"] svg').style.fill = 'red'
+                            }
+                        })    
+                    }
 
-                    // update position
+                    if (data.won != null) {
+                        alert('You won the game!')
+                        gameWon = data.won
+                        console.log(gameWon)
+                    }
+
+                    // Remove player icon from previous position
+                    document.querySelector('[data-square="' + position + '"] button').removeAttribute('id')
+                    // Add player icon to new position
+                    document.querySelector('[data-square="' + data.position + '"] button').setAttribute('id', 'player-icon')
+
+                    // Update position in HTML
                     document.querySelector('#game-view').dataset.position = data.position
+                    // Remove square class
                     this.parentNode.classList.remove(this.parentNode.classList[1])
+                    // Update square class
                     this.parentNode.classList.add('square' + data.type)
                 });
             }

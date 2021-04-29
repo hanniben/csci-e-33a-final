@@ -3,17 +3,26 @@
 
 {% block body %}
 
-    <div id="game-view" data-position="{{game.position}}"></div>
+    <div id="game-view" data-position="{{game.position}}" data-won="{{game.timestamp_won}}"></div>
 
     <h1>{{ game }}</h1>
 
+    <div class="grid-keys">
+        {% for key in game.keys %}
+            <div class="grid-item" data-key="{{forloop.counter}}">
+                <div><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" {% if key == '1' %} fill="red" {% endif %}>
+                    <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                </svg></div>
+            </div>
+        {% endfor %}
+    </div>
 
-    <div class="grid-container" data-game-id="{{game.id}}">
+    <div class="grid-game" data-game-id="{{game.id}}">
         {% for square in game.squares %}
 
         <div class="grid-item square{{square}}" data-square="{{forloop.counter}}">
             {% csrf_token %}
-            <button>{% if game.position == forloop.counter %}<img id="player-icon">{% endif %}</button>
+            <button {% if game.position == forloop.counter %} id="player-icon" {% endif %}></button>
         </div>
 
         {% endfor %}

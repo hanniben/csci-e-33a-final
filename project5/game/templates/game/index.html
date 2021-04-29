@@ -1,12 +1,35 @@
 {% extends "game/layout.html" %}
+{% load static %}
+
+{% block sidebar %}
+
+    {% if won %}
+    <strong>Announcements:</strong>
+
+    {% for game in won %}
+
+    <div>{{ game.player }} won a game at {{ game.timestamp_won }}</div>
+
+    {% endfor %}
+
+    {% endif %}
+
+{% endblock %}
 
 {% block body %}
+
+    <h1>Hello {{ request.user }}! Would you like to play a game?</h1>
+
+    {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'new' %}">Play A New Game</a>
+    {% endif %}
+
     {% for game in games %}
 
-        {# Display game number #}
         <a id="game-list" href="{% url 'game_view' game.id %}">
 
-            <div>{{ game.id }}</div>
+            <div>Last Saved: </div>
+            <div>{{ game.timestamp_save }}</div>
             <div>Keys found: </div>
 
             {% for key in game.keys %}
@@ -18,4 +41,7 @@
         </a>
     
     {% endfor %}
+
+
+
 {% endblock %}
