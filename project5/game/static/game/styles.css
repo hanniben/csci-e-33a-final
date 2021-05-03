@@ -1,16 +1,42 @@
-.row {
-  margin: 0px;
-}
-
-@media (min-width: 600px) {
-  .row {
-    display: flex;
+@keyframes key {
+  0% {
+    background-color: none;
   }
+  1% {
+    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-position-y: 25vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  99% {
+    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-position-y: 0vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  100% {
+    background-image: none
+    }
 }
 
-@media (max-width: 599px) {
-  .row {
-      display: grid;
+@keyframes hole {
+  0% {
+    background-color: none;
+  }
+  1% {
+    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-position-y: 0vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  99% {
+    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-position-y: 25vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  100% {
+    background-color: none;
   }
 }
 
@@ -18,10 +44,33 @@ body, head, a {
   background-color: #276ebd;
   color: white;
   text-align: center;
+  font-family: helvetica, sans-serif;
 }
 
-text {
-  font: helvetica, sans-serif;
+#navigation {
+  margin-top: 20px;
+}
+
+#first-line {
+  font-size: 10vw;
+  font-weight: bolder;
+  line-height: 1;
+}
+
+#second-line {
+  font-size: 3vw;
+  font-weight: bolder;
+  line-height: 1;
+}
+
+#third-line {
+  font-size: 2vw;
+}
+
+#title {
+  font-size: 2vw;
+  display: block;
+  margin-top: 30px;
 }
 
 a:hover {
@@ -29,14 +78,26 @@ a:hover {
   color: yellow;
 }
 
+.index-table {
+  max-height: 100px;
+  overflow: auto;
+  width: max-content;
+  text-align: left;
+  background-color: lightskyblue;
+  margin: auto;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
 .grid-game, .grid-keys {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+    margin: 0px 10vw;
   }
   
 .grid-item {
   display: grid;
-  border: 1px solid rgba(0, 0, 0, 0.8);
+  border: 1px solid black;
   position: relative;
   padding-bottom: 100%;
 }
@@ -59,6 +120,26 @@ a:hover {
 
 .square4 {
   background-color: black;
+}
+
+.key-cheat {
+  border: 1px solid blue;
+}
+
+.hole-cheat {
+  border: 1px solid red;
+}
+
+.key-animation {
+  animation-name: key;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+.hole-animation {
+  animation-name: hole;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
 }
 
 #game-list {

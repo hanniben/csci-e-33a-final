@@ -8,7 +8,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import User, Game, Square, Row
+from .models import User, Game
 
 
 def index(request):

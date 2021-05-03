@@ -7,6 +7,10 @@
 
     <h1>{{ game }}</h1>
 
+    {% if request.user.is_superuser%}
+    <button class="btn btn-light" id="cheat" onclick="cheat()">Cheat</button>
+    {% endif %}
+
     <div class="grid-keys">
         {% for key in game.keys %}
             <div class="grid-item" data-key="{{forloop.counter}}">

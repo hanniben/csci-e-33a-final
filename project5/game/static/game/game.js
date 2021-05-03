@@ -1,10 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-
+    // CSRF token
     if (document.querySelector('#game-view')) {
         token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
     }
 
-   // Show game view
+    // Default cheats hidden
+    cheatid = 0;
+
+    // Show game view
     document.querySelector('#game-view').style.display = 'block';
     const gridId = document.querySelector('.grid-game').dataset.gameId
     let gameWon = document.querySelector('#game-view').dataset.won
@@ -33,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 right = position + 1
             }
 
+            // Move player if adjacent square selected and game is not won
             if([above, below, left, right].includes(parseInt(this.parentNode.dataset.square)) && (gameWon == 'None')) {
                 const moveType = parseInt(this.parentNode.classList[1].charAt(6))
                 fetch(`/move/${gridId}`, {
@@ -45,11 +49,22 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if ([1, 4].includes(moveType)) {
-                        alert('There is a hole in the floor! You fell through and have to start from the beginning.')
+                    if (data.won != null) {
+                        alert('You won the game!')
+                        gameWon = data.won
                     }
-                    if (moveType == 2) {
-                        alert('You found a key!')
+
+                    // Remove player icon from previous position
+                    document.querySelector('[data-square="' + position + '"] button').removeAttribute('id')
+
+                    // If move to hole square, start hole animation
+                    if (moveType == 1 || moveType == 4) {
+                        this.classList.add('hole-animation')
+                    }
+                    // If move to key square, start key animation
+                    else if (moveType == 2) {
+                        this.classList.add('key-animation')
+                        // Update key display at top of page to show found keys
                         document.querySelectorAll('.grid-keys div.grid-item').forEach(key => {
                             if (data.keys.charAt(key.dataset.key-1) == 1) {
                                 document.querySelector('[data-key="' + key.dataset.key + '"] svg').style.fill = 'red'
@@ -57,14 +72,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         })    
                     }
 
-                    if (data.won != null) {
-                        alert('You won the game!')
-                        gameWon = data.won
-                        console.log(gameWon)
-                    }
-
-                    // Remove player icon from previous position
-                    document.querySelector('[data-square="' + position + '"] button').removeAttribute('id')
                     // Add player icon to new position
                     document.querySelector('[data-square="' + data.position + '"] button').setAttribute('id', 'player-icon')
 
@@ -74,12 +81,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     this.parentNode.classList.remove(this.parentNode.classList[1])
                     // Update square class
                     this.parentNode.classList.add('square' + data.type)
+
+                    // Remove animation classes when dont
+                    this.addEventListener('animationend', () => {
+                        this.classList.remove('key-animation')
+                        this.classList.remove('hole-animation')
+                    })
                 });
             }
         })
     })
-
-
-
-
 })
+
+
+// Display cheats
+function cheat() {
+    // Toggle cheat id
+        // Outline squares with holes in red
+        document.querySelectorAll(".square1").forEach(hole => {
+            hole.classList.toggle("hole-cheat")
+        })
+
+        // Outline squares with keys in blue
+        document.querySelectorAll(".square2").forEach(key => {
+            key.classList.toggle("key-cheat")
+        })
+}

@@ -1,12 +1,8 @@
 from django.contrib import admin
-from .models import User, Game, Square, Row
+from .models import User, Game
 
 # Register your models here.
 
 admin.site.register(User)
 
 admin.site.register(Game)
-
-admin.site.register(Square)
-
-admin.site.register(Row)
