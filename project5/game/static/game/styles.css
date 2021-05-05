@@ -3,13 +3,13 @@
     background-color: none;
   }
   1% {
-    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-image: url("/static/images/key.svg");
     background-position-y: 25vh;
     background-size: cover;
     background-repeat: no-repeat;
   }
   99% {
-    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-image: url("/static/images/key.svg");
     background-position-y: 0vh;
     background-size: cover;
     background-repeat: no-repeat;
@@ -24,13 +24,13 @@
     background-color: none;
   }
   1% {
-    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-image: url("/static/images/goose_fall.svg");
     background-position-y: 0vh;
     background-size: cover;
     background-repeat: no-repeat;
   }
   99% {
-    background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+    background-image: url("/static/images/goose_fall.svg");
     background-position-y: 25vh;
     background-size: cover;
     background-repeat: no-repeat;
@@ -40,8 +40,71 @@
   }
 }
 
+@media (min-width: 600px) {
+  #first-line {
+    font-size: 135px;
+  }
+  
+  #second-line {
+    font-size: 43px;
+  }
+
+  #third-line, #title {
+    font-size: 30px;
+  }
+
+  .index-table {
+    width: 600px;
+  }
+
+  #game-list div {
+    display: inline;
+  }
+}
+
+@media (max-width: 599px) {
+  #first-line {
+    font-size: 20vw;
+  }
+  
+  #second-line {
+    font-size: 6.5vw;
+  }
+
+  #third-line, #title {
+    font-size: 20px;
+  } 
+  
+  .index-table {
+    width: 90vw;
+  }
+
+  #game-list div {
+    display: block;
+  }
+}
+
+#first-line, #second-line {
+  font-weight: bolder;
+  line-height: 1;
+}
+
+#title {
+  display: block;
+  margin-top: 30px;
+}
+
+#third-line {
+  vertical-align: middle;
+}
+
+#game-list svg {
+  max-width: 20px;
+  height: auto;
+}
+
 body, head, a {
-  background-color: #276ebd;
+  background-color: black;
   color: white;
   text-align: center;
   font-family: helvetica, sans-serif;
@@ -51,26 +114,9 @@ body, head, a {
   margin-top: 20px;
 }
 
-#first-line {
-  font-size: 10vw;
-  font-weight: bolder;
-  line-height: 1;
-}
-
-#second-line {
-  font-size: 3vw;
-  font-weight: bolder;
-  line-height: 1;
-}
-
-#third-line {
-  font-size: 2vw;
-}
-
-#title {
-  font-size: 2vw;
-  display: block;
-  margin-top: 30px;
+.form-group {
+  display: inline;
+  margin: 10px;
 }
 
 a:hover {
@@ -81,9 +127,8 @@ a:hover {
 .index-table {
   max-height: 100px;
   overflow: auto;
-  width: max-content;
   text-align: left;
-  background-color: lightskyblue;
+  background-color: orangered;
   margin: auto;
   padding: 5px 10px;
   border-radius: 10px;
@@ -110,16 +155,33 @@ a:hover {
   position: absolute;
 }
 
+#start {
+  background-image: url("/static/images/start.svg");
+  width: 8vw;
+  height: 8vw;
+  margin: 0px auto 0px 10vw;
+}
+
+#end {
+  background-image: url("/static/images/end.svg");
+  width: 8vw;
+  height: 8vw;
+  margin: 0px 10vw 0px auto;
+}
+
 .square0, .square1, .square2 {
-  background-color: green;
+  background-image: url("/static/images/unvisited.svg");
+  background-size: cover;
 }
 
 .square3 {
-  background-color: brown;
+  background-image: url("/static/images/visited.svg");
+  background-size: cover;
 }
 
 .square4 {
-  background-color: black;
+  background-image: url("/static/images/hole.svg");
+  background-size: cover;
 }
 
 .key-cheat {
@@ -147,14 +209,10 @@ a:hover {
   border: 2px solid white;
   margin: 5px auto;
   padding: 0 5px;
-  width: max-content;
 }
 
-#game-list > div {
-  display: inline-block;
-}
 
 #player-icon {
-  background-image: url("https://pbs.twimg.com/profile_images/1183790642838855687/s-gWXpQG_400x400.jpg");
+  background-image: url("/static/images/goose.svg");
   background-size: cover;
 }

@@ -30,7 +30,11 @@ def index(request):
 
 
 def new_game(request):
-    if request.user.is_authenticated:
+    if request.method == "POST":
+
+        # Get easy or hard mode
+        mode = request.POST["mode"]
+
         # Set grid_type as empty list
         grid_type=[]
 
@@ -45,8 +49,14 @@ def new_game(request):
                 row_type[0] = 3
 
             # Add hole squares as type 1
-            if x in [2,4,6,8]:
-                row_type[random.randint(0,9)] = 1
+            # Easy mode add holes in rows 2, 4, 6, and 8
+            if mode == True:
+                if x in [2,4,6,8]:
+                    row_type[random.randint(0,9)] = 1
+            # Hard mode add holes in rows 1 through 8
+            else:
+                if x in [1,2,3,4,5,6,7,8]:
+                    row_type[random.randint(0,9)] = 1
 
             # Add key squares as type 2
             while True:
@@ -57,7 +67,7 @@ def new_game(request):
                 else:
                     y = random.randint(0,9)
 
-                # Add key if square is empty
+                # Add key if square is empty, repeat while loop if not
                 if row_type[y] == 0:
                     row_type[y] = 2
                     break
@@ -71,11 +81,13 @@ def new_game(request):
             )
         new_game.save()
 
-    return HttpResponseRedirect(reverse('game_view', args=(new_game.id,)))
+        return HttpResponseRedirect(reverse('game_view', args=(new_game.id,)))
+        
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 
 def game_view(request, id):
-
     game = Game.objects.get(pk=id)
 
     return render(request, "game/game.html", {
@@ -122,9 +134,6 @@ def move(request, id):
 
     # Return new post text
     return JsonResponse({"position": game.position, "type":game.squares[index-1], "keys":game.keys, "won":game.timestamp_won}, safe=False)
-
-
-
 
 
 def login_view(request):

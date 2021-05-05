@@ -6,6 +6,7 @@
         <title>{% block title %}Untitled Dungeon Crawler Game{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'game/styles.css' %}" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% block script %}
         {% endblock %}
     </head>
@@ -16,12 +17,11 @@
         <div id="navigation">
 
             {% if user.is_authenticated %}
-                <a class="btn btn-light" href="{% url 'index' %}">All Games</a>
-
-                <a class="btn btn-light" href="{% url 'new' %}">New Game</a>
-    
-                <a class="btn btn-light" href="{% url 'logout' %}">Log Out</a>
-    
+                <div>
+                    <span id="third-line">Hello {{ request.user }}!</span>
+                    <a class="btn btn-light" href="{% url 'logout' %}">Log Out</a>    
+                </div>
+        
             {% else %}
                 <a class="btn btn-light" href="{% url 'login' %}">Log In</a>
     

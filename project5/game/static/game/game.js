@@ -37,13 +37,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Move player if adjacent square selected and game is not won
-            if([above, below, left, right].includes(parseInt(this.parentNode.dataset.square)) && (gameWon == 'None')) {
+            if([above, below, left, right].includes(parseInt(this.parentNode.dataset.index)) && (gameWon == 'None')) {
                 const moveType = parseInt(this.parentNode.classList[1].charAt(6))
                 fetch(`/move/${gridId}`, {
                     method:'PUT',
                     headers:{"X-CSRFToken":token},
                     body: JSON.stringify({
-                        squareId: parseInt(this.parentNode.dataset.square),
+                        squareId: parseInt(this.parentNode.dataset.index),
                         type: moveType
                     })
                 })
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     // Remove player icon from previous position
-                    document.querySelector('[data-square="' + position + '"] button').removeAttribute('id')
+                    document.querySelector('[data-index="' + position + '"] button').removeAttribute('id')
 
                     // If move to hole square, start hole animation
                     if (moveType == 1 || moveType == 4) {
@@ -73,14 +73,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     // Add player icon to new position
-                    document.querySelector('[data-square="' + data.position + '"] button').setAttribute('id', 'player-icon')
+                    document.querySelector('[data-index="' + data.position + '"] button').setAttribute('id', 'player-icon')
 
                     // Update position in HTML
                     document.querySelector('#game-view').dataset.position = data.position
-                    // Remove square class
-                    this.parentNode.classList.remove(this.parentNode.classList[1])
+                    // Remove all classes
+                    this.parentNode.className = ''
                     // Update square class
-                    this.parentNode.classList.add('square' + data.type)
+                    this.parentNode.classList.add('grid-item', 'square' + data.type)
 
                     // Remove animation classes when dont
                     this.addEventListener('animationend', () => {
