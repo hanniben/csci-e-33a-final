@@ -1,3 +1,10 @@
+/* key animation */
+.key-animation {
+  animation-name: key;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
 @keyframes key {
   0% {
     background-color: none;
@@ -17,6 +24,13 @@
   100% {
     background-image: none
     }
+}
+
+/* hole animation */
+.hole-animation {
+  animation-name: hole;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes hole {
@@ -40,6 +54,7 @@
   }
 }
 
+/* large screen */
 @media (min-width: 600px) {
   #first-line {
     font-size: 135px;
@@ -53,7 +68,7 @@
     font-size: 30px;
   }
 
-  .index-table {
+  .index-table, #new-game-form {
     width: 600px;
   }
 
@@ -62,6 +77,7 @@
   }
 }
 
+/* small screen */
 @media (max-width: 599px) {
   #first-line {
     font-size: 20vw;
@@ -75,7 +91,7 @@
     font-size: 20px;
   } 
   
-  .index-table {
+  .index-table, #new-game-form {
     width: 90vw;
   }
 
@@ -84,25 +100,7 @@
   }
 }
 
-#first-line, #second-line {
-  font-weight: bolder;
-  line-height: 1;
-}
-
-#title {
-  display: block;
-  margin-top: 30px;
-}
-
-#third-line {
-  vertical-align: middle;
-}
-
-#game-list svg {
-  max-width: 20px;
-  height: auto;
-}
-
+/* general text */
 body, head, a {
   background-color: black;
   color: white;
@@ -110,20 +108,50 @@ body, head, a {
   font-family: helvetica, sans-serif;
 }
 
-#navigation {
-  margin-top: 20px;
-}
-
-.form-group {
-  display: inline;
-  margin: 10px;
-}
-
 a:hover {
   text-decoration: none;
   color: yellow;
 }
 
+/* Untitled Dungeon Crawler Game text */
+#first-line, #second-line {
+  font-weight: bolder;
+  line-height: 1;
+}
+
+/* hello user name and logout */
+#third-line {
+  vertical-align: middle;
+}
+
+/* index page table titles */
+#title {
+  display: block;
+  margin-top: 30px;
+}
+
+/* index page navigation */
+#index-nav {
+  margin-top: 20px;
+}
+
+/* Index page new game for and navigation */
+#new-game-form, #game-nav {
+  background-color: orangered;
+  margin: 20px auto 0px auto;
+  padding: 5px 10px;
+  border-radius: 10px;
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+/* index page new game form */
+.form-group {
+  display: inline;
+  margin: 10px;
+}
+
+/* index page tables */
 .index-table {
   max-height: 100px;
   overflow: auto;
@@ -134,12 +162,33 @@ a:hover {
   border-radius: 10px;
 }
 
+/* unfinished game list */
+#game-list {
+  display: block;
+  border: 2px solid white;
+  margin: 5px auto;
+  padding: 0 5px;
+}
+
+/* unfinished game table keys */
+#game-list svg {
+  max-width: 20px;
+  height: auto;
+}
+
+/* game navigation */
+#game-nav > * {
+  margin: 0px 5px;
+}
+
+/* game grid */
 .grid-game, .grid-keys {
     display: grid;
     grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
     margin: 0px 10vw;
   }
   
+/* grid square div */
 .grid-item {
   display: grid;
   border: 1px solid black;
@@ -147,6 +196,7 @@ a:hover {
   padding-bottom: 100%;
 }
 
+/* grid square button and graphic */
 .grid-item button, .grid-item svg {
   width: 100%;
   height: 100%;
@@ -155,6 +205,7 @@ a:hover {
   position: absolute;
 }
 
+/* start here graphic */
 #start {
   background-image: url("/static/images/start.svg");
   width: 8vw;
@@ -162,6 +213,7 @@ a:hover {
   margin: 0px auto 0px 10vw;
 }
 
+/* end here graphic */
 #end {
   background-image: url("/static/images/end.svg");
   width: 8vw;
@@ -169,50 +221,42 @@ a:hover {
   margin: 0px 10vw 0px auto;
 }
 
+/* unvisited graphic */
 .square0, .square1, .square2 {
   background-image: url("/static/images/unvisited.svg");
   background-size: cover;
 }
 
+/* empty visited graphic */
 .square3 {
   background-image: url("/static/images/visited.svg");
   background-size: cover;
 }
 
+/* hole visited graphic */
 .square4 {
   background-image: url("/static/images/hole.svg");
   background-size: cover;
 }
 
+/* player graphic */
+#player-icon {
+  background-image: url("/static/images/goose.svg");
+  background-size: cover;
+}
+
+/* player win graphic */
+#won-icon {
+  background-image: url("/static/images/goose_win.svg");
+  background-size: cover;
+}
+
+/* key cheat outline */
 .key-cheat {
   border: 1px solid blue;
 }
 
+/* hole cheat outline */
 .hole-cheat {
   border: 1px solid red;
-}
-
-.key-animation {
-  animation-name: key;
-  animation-duration: 2s;
-  animation-fill-mode: forwards;
-}
-
-.hole-animation {
-  animation-name: hole;
-  animation-duration: 2s;
-  animation-fill-mode: forwards;
-}
-
-#game-list {
-  display: block;
-  border: 2px solid white;
-  margin: 5px auto;
-  padding: 0 5px;
-}
-
-
-#player-icon {
-  background-image: url("/static/images/goose.svg");
-  background-size: cover;
 }

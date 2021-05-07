@@ -1,22 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     // CSRF token
-    if (document.querySelector('#game-view')) {
-        token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
-    }
+    token = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
 
     // Default cheats hidden
     cheatid = 0;
 
     // Show game view
-    document.querySelector('#game-view').style.display = 'block';
     const gridId = document.querySelector('.grid-game').dataset.gameId
-    let gameWon = document.querySelector('#game-view').dataset.won
+    let gameWon = document.querySelector('.grid-game').dataset.won
 
 
     document.querySelectorAll('.grid-item button').forEach(button => {
         button.addEventListener('click', function() {
             // Get previous position
-            let position = parseInt(document.querySelector('#game-view').dataset.position)
+            let position = parseInt(document.querySelector('.grid-game').dataset.position)
 
             // Get above square if any
             let above, below, left, right = 0
@@ -49,11 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.won != null) {
-                        alert('You won the game!')
-                        gameWon = data.won
-                    }
-
                     // Remove player icon from previous position
                     document.querySelector('[data-index="' + position + '"] button').removeAttribute('id')
 
@@ -72,11 +64,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         })    
                     }
 
+                    // If game is won, change player icon and set gameWon to prevent further movement
+                    if (data.won != null) {
+                        document.querySelector('[data-index="' + data.position + '"] button').setAttribute('id', 'won-icon')
+                        gameWon = data.won
+                    }
+
                     // Add player icon to new position
-                    document.querySelector('[data-index="' + data.position + '"] button').setAttribute('id', 'player-icon')
+                    else {
+                        document.querySelector('[data-index="' + data.position + '"] button').setAttribute('id', 'player-icon')
+                    }
 
                     // Update position in HTML
-                    document.querySelector('#game-view').dataset.position = data.position
+                    document.querySelector('.grid-game').dataset.position = data.position
                     // Remove all classes
                     this.parentNode.className = ''
                     // Update square class

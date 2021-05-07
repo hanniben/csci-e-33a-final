@@ -5,7 +5,7 @@
 {% block body %}
 
     {% if user.is_authenticated %}
-        <form action="{% url 'new' %}" method="post">
+        <form id="new-game-form" action="{% url 'new' %}" method="post">
             {% csrf_token %}
             <div class="form-group">
                 <input type="radio" name="mode" value="True" id="easyCheck" checked>
@@ -20,7 +20,7 @@
                 </label>
             </div>
             <br>
-            <input class="btn btn-light" type="submit" value="Start">
+            <input class="btn btn-light" type="submit" value="Start A New Game">
         </form>
     {% endif %}
 
@@ -39,7 +39,9 @@
                             <path class="cls-1" d="M338,37.3A76.87,76.87,0,0,0,215,126L39.45,301.54,73.8,335.89l49.33,49.33V352.34l24.67,8.22-8.22-24.67h32.89l-49.34-49.33L249.3,160.39A76.86,76.86,0,0,0,338,37.3ZM131.35,311.22l1.65,4.94-22.2,7.4-7.4,22.2-4.93-1.65V327.67l12.33-4.11,4.11-12.34Zm152.35-168a51.57,51.57,0,1,1,51.57-51.57A51.57,51.57,0,0,1,283.7,143.21Z"/>
                         </svg>
                     {% endfor %}
+                    {% if game.mode %} Easy{% else %} Hard{% endif %}
                 </div>
+                
             </a>
         
         {% endfor %}

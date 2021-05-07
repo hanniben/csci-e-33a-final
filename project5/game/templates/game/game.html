@@ -3,13 +3,14 @@
 
 {% block body %}
 
-    <div id="game-view" data-position="{{game.position}}" data-won="{{game.timestamp_won}}"></div>
+    <div id="game-nav" >
+        <a class="btn btn-light" href="{% url 'index' %}">Main Menu</a>
 
-    <a class="btn btn-light" href="{% url 'index' %}">Main</a>
+        {% if request.user.is_superuser%}
+        <button class="btn btn-light" id="cheat" onclick="cheat()">Cheat</button>
+        {% endif %}    
+    </div>
 
-    {% if request.user.is_superuser%}
-    <button class="btn btn-light" id="cheat" onclick="cheat()">Cheat</button>
-    {% endif %}
 
     <div class="grid-keys">
         {% for key in game.keys %}
@@ -23,12 +24,14 @@
 
     <div id="start"></div>
 
-    <div class="grid-game" data-game-id="{{game.id}}">
+    <div class="grid-game" data-game-id="{{game.id}}" data-position="{{game.position}}" data-won="{{game.timestamp_won}}">
         {% for square in game.squares %}
 
         <div class="grid-item square{{square}}" data-index="{{forloop.counter}}">
             {% csrf_token %}
-            <button {% if game.position == forloop.counter %} id="player-icon" {% endif %}></button>
+            <button {% if game.position == forloop.counter and not game.timestamp_won %} id="player-icon"
+                {% elif game.position == forloop.counter and game.timestamp_won %} id="won-icon" {% endif %}>
+            </button>
         </div>
 
         {% endfor %}

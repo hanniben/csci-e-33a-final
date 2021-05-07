@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class NetworkConfig(AppConfig):
+class GameConfig(AppConfig):
     name = 'game'
+
