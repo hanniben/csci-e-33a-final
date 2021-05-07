@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const gridId = document.querySelector('.grid-game').dataset.gameId
     let gameWon = document.querySelector('.grid-game').dataset.won
 
-
+    // Get all square buttons
     document.querySelectorAll('.grid-item button').forEach(button => {
         button.addEventListener('click', function() {
             // Get previous position

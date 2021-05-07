@@ -4,8 +4,13 @@
 
 {% block body %}
 
+
+    {# new game form #}
     {% if user.is_authenticated %}
+
         <form id="new-game-form" action="{% url 'new' %}" method="post">
+
+            {# select easy mode #}
             {% csrf_token %}
             <div class="form-group">
                 <input type="radio" name="mode" value="True" id="easyCheck" checked>
@@ -13,51 +18,68 @@
                     Easy Mode
                 </label>
             </div>
+
+            {# select hard mode #}
             <div class="form-group">
                 <input type="radio" name="mode" value="False" id="hardCheck">
                 <label class="form-check-label" for="hardCheck">
                     Hard Mode
                 </label>
             </div>
-            <br>
+
+            {# start #}
             <input class="btn btn-light" type="submit" value="Start A New Game">
+
         </form>
+
     {% endif %}
 
+
+    {# display any saved games #}
     {% if games %}
-        <span id="title">Your Saved Games:</span>
-        <div class="index-table">
-            {% for game in games %}
-            <a id="game-list" href="{% url 'game_view' game.id %}">
 
-                <div>
-                    Last Saved: {{ game.timestamp_save }} 
-                </div>
-                <div>
-                    {% for key in game.keys %}
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" {% if key == '1' %} fill="red" {% else %} fill="grey" {% endif %}>
-                            <path class="cls-1" d="M338,37.3A76.87,76.87,0,0,0,215,126L39.45,301.54,73.8,335.89l49.33,49.33V352.34l24.67,8.22-8.22-24.67h32.89l-49.34-49.33L249.3,160.39A76.86,76.86,0,0,0,338,37.3ZM131.35,311.22l1.65,4.94-22.2,7.4-7.4,22.2-4.93-1.65V327.67l12.33-4.11,4.11-12.34Zm152.35-168a51.57,51.57,0,1,1,51.57-51.57A51.57,51.57,0,0,1,283.7,143.21Z"/>
-                        </svg>
-                    {% endfor %}
-                    {% if game.mode %} Easy{% else %} Hard{% endif %}
-                </div>
-                
-            </a>
-        
-        {% endfor %}
+        <span id="title">Your Saved Games:</span>
+
+        {# display last game save, keys found, and difficulty #}
+        <div class="index-table">
+
+            {% for game in games %}
+                <a id="game-list" href="{% url 'game_view' game.id %}">
+
+                    <div>
+                        Last Saved: {{ game.timestamp_save }} 
+                    </div>
+                    <div>
+                        {% for key in game.keys %}
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" {% if key == '1' %} fill="red" {% else %} fill="grey" {% endif %}>
+                                <path class="cls-1" d="M338,37.3A76.87,76.87,0,0,0,215,126L39.45,301.54,73.8,335.89l49.33,49.33V352.34l24.67,8.22-8.22-24.67h32.89l-49.34-49.33L249.3,160.39A76.86,76.86,0,0,0,338,37.3ZM131.35,311.22l1.65,4.94-22.2,7.4-7.4,22.2-4.93-1.65V327.67l12.33-4.11,4.11-12.34Zm152.35-168a51.57,51.57,0,1,1,51.57-51.57A51.57,51.57,0,0,1,283.7,143.21Z"/>
+                            </svg>
+                        {% endfor %}
+                        {% if game.mode %} Easy{% else %} Hard{% endif %}
+                    </div>
+                </a>
+            {% endfor %}
+
         </div>
+
     {% endif %}
 
+
+    {# display any won games #}
     {% if won %}
-    <span id="title">Announcements:</span>
 
-    <div class="index-table">
-        {% for game in won %}
+        <span id="title">Announcements:</span>
 
-        <div>{{ game.player }} won a game at {{ game.timestamp_won }}</div>
-    
-        {% endfor %}    
-    </div>
+        {# display user and time won #}
+        <div class="index-table">
+
+            {% for game in won %}
+
+                <div>{{ game.player }} won a game at {{ game.timestamp_won }}</div>
+        
+            {% endfor %}
+
+        </div>
 
     {% endif %}
 

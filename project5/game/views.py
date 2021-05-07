@@ -11,6 +11,7 @@ from django.utils import timezone
 from .models import User, Game
 
 
+# Index page
 def index(request):
     # Filter unfinished games by player
     games = Game.objects.filter(player__username=request.user).filter(timestamp_won__isnull=True)

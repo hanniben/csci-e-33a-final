@@ -3,40 +3,62 @@
 
 {% block body %}
 
+    {# top navigation buttons #}
     <div id="game-nav" >
         <a class="btn btn-light" href="{% url 'index' %}">Main Menu</a>
 
+        {# display cheat if superuser is signed in #}
         {% if request.user.is_superuser%}
-        <button class="btn btn-light" id="cheat" onclick="cheat()">Cheat</button>
-        {% endif %}    
+
+            <button class="btn btn-light" id="cheat" onclick="cheat()">Cheat</button>
+
+        {% endif %}
+
     </div>
 
 
+    {# found keys display #}
     <div class="grid-keys">
+
+        {# fill grey if not found, fill red if found #}
         {% for key in game.keys %}
+
             <div class="grid-item" data-key="{{forloop.counter}}">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"  {% if key == '1' %} fill="red" {% else %} fill="grey" {% endif %}>
                     <path class="cls-1" d="M338,37.3A76.87,76.87,0,0,0,215,126L39.45,301.54,73.8,335.89l49.33,49.33V352.34l24.67,8.22-8.22-24.67h32.89l-49.34-49.33L249.3,160.39A76.86,76.86,0,0,0,338,37.3ZM131.35,311.22l1.65,4.94-22.2,7.4-7.4,22.2-4.93-1.65V327.67l12.33-4.11,4.11-12.34Zm152.35-168a51.57,51.57,0,1,1,51.57-51.57A51.57,51.57,0,0,1,283.7,143.21Z"/>
                 </svg>
             </div>
+
         {% endfor %}
+
     </div>
 
+    {# start here graphic #}
     <div id="start"></div>
 
+
+    {# game grid #}
     <div class="grid-game" data-game-id="{{game.id}}" data-position="{{game.position}}" data-won="{{game.timestamp_won}}">
+        
         {% for square in game.squares %}
 
-        <div class="grid-item square{{square}}" data-index="{{forloop.counter}}">
-            {% csrf_token %}
-            <button {% if game.position == forloop.counter and not game.timestamp_won %} id="player-icon"
-                {% elif game.position == forloop.counter and game.timestamp_won %} id="won-icon" {% endif %}>
-            </button>
-        </div>
+            {# div holds square type, index, and background graphic #}
+            <div class="grid-item square{{square}}" data-index="{{forloop.counter}}">
+
+                {# button holds player icon and animation #}
+                {% csrf_token %}
+                <button {% if game.position == forloop.counter and not game.timestamp_won %} id="player-icon"
+                    {% elif game.position == forloop.counter and game.timestamp_won %} id="won-icon" {% endif %}>
+                </button>
+                
+            </div>
 
         {% endfor %}
+
     </div>
 
+
+    {# end here graphic #}
     <div id="end"></div>
 
 {% endblock %}
