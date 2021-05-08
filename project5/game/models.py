@@ -21,9 +21,9 @@ class Game(models.Model):
     # Square statuses
     squares = models.CharField(max_length=100, default='0'*100, blank=False)
     # Key statuses
-    keys = models.CharField(max_length = 10, default='0'*10, blank=False)
+    keys = models.CharField(max_length=10, default='0'*10, blank=False)
     # Difficulty mode
     mode = models.BooleanField(default=True, blank=False)
-    
+
     def __str__(self):
         return f"{self.player}'s game#{self.id}"

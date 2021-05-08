@@ -1,6 +1,7 @@
 from django.test import Client, TestCase
 from game.models import User, Game
 
+
 # Create your tests here.
 class GameTestCase(TestCase):
 
@@ -15,33 +16,27 @@ class GameTestCase(TestCase):
         for y in range(100):
             response = c.post("/new", {"mode": "False"})
 
-      
     # Test that every game square 0 is type 3
     def test_start_square(self):
         for game in Game.objects.all():
             self.assertEqual(game.squares[0], "3")
-
 
     # Test that every game square 100 is type 0
     def test_last_square(self):
         for game in Game.objects.all():
             self.assertEqual(game.squares[99], "0")
 
-
     # Test that all easy games have 4 holes
     def test_hole_easy(self):
-        for game in Game.objects.filter(mode = True):
+        for game in Game.objects.filter(mode=True):
             self.assertEqual(game.squares.count('1'), 4)
-
 
     # Test that all hard games have 8 holes
     def test_hole_hard(self):
-        for game in Game.objects.filter(mode = False):
+        for game in Game.objects.filter(mode=False):
             self.assertEqual(game.squares.count('1'), 8)
-
 
     # Test that all games have 10 keys
     def test_key_square(self):
         for game in Game.objects.all():
             self.assertEqual(game.squares.count('2'), 10)
-

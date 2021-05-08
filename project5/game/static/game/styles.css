@@ -54,6 +54,34 @@
   }
 }
 
+/* won animation */
+.won-animation {
+  animation-name: won;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes won {
+  0% {
+    background-color: none;
+  }
+  1% {
+    background-image: url("/static/images/goose_win.svg");
+    background-position-y: 25vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  99% {
+    background-image: url("/static/images/goose_win.svg");
+    background-position-y: 0vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  100% {
+    background-image: none
+    }
+}
+
 /* large screen */
 @media (min-width: 600px) {
   #first-line {

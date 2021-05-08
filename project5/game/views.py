@@ -27,8 +27,8 @@ def index(request):
 
     # Return index page
     return render(request, "game/index.html", {
-        "games":games,
-        "won":won_games
+        "games": games,
+        "won": won_games
     })
 
 
@@ -40,14 +40,14 @@ def new_game(request):
         mode = request.POST["mode"]
 
         # Set grid_type as empty list
-        grid_type=[]
+        grid_type = []
 
         # Loop for 10 rows
         for x in range(10):
-            
+
             # Create array of 10 for each grid row
             row_type = [0] * 10
-            
+
             # If first row, set first space to visited type 3
             if x == 0:
                 row_type[0] = 3
@@ -55,23 +55,23 @@ def new_game(request):
             # Add hole squares as type 1
             # Easy mode add holes in rows 2, 4, 6, and 8
             if mode == "True":
-                if x in [2,4,6,8]:
-                    row_type[random.randint(0,9)] = 1
+                if x in [2, 4, 6, 8]:
+                    row_type[random.randint(0, 9)] = 1
 
             # Hard mode add holes in rows 1 through 8
             else:
-                if x in [1,2,3,4,5,6,7,8]:
-                    row_type[random.randint(0,9)] = 1
+                if x in [1, 2, 3, 4, 5, 6, 7, 8]:
+                    row_type[random.randint(0, 9)] = 1
 
             # Add key squares as type 2
             while True:
                 # If last row, random key placement between 0 and 8 to make sure key is not in last square
                 if x == 9:
-                    y = random.randint(0,8)
+                    y = random.randint(0, 8)
 
                 # Else random key placement between 0 and 9
                 else:
-                    y = random.randint(0,9)
+                    y = random.randint(0, 9)
 
                 # Add key if square is empty, repeat while loop if not
                 if row_type[y] == 0:
@@ -83,15 +83,15 @@ def new_game(request):
 
         # Save game
         new_game = Game(
-            player = request.user,
-            squares = "".join(list(map(str,grid_type))),
-            mode = bool(mode == "True")
+            player=request.user,
+            squares="".join(list(map(str, grid_type))),
+            mode=bool(mode == "True")
             )
         new_game.save()
 
         # Redirect to game page
         return HttpResponseRedirect(reverse('game_view', args=(new_game.id,)))
-        
+
     # If no POST return to index page
     else:
         return HttpResponseRedirect(reverse('index'))
@@ -104,9 +104,9 @@ def game_view(request, id):
         game = Game.objects.get(pk=id)
         # Render game
         return render(request, "game/game.html", {
-            "game":game
+            "game": game
         })
-    
+
     # Else redirect to index
     else:
         return HttpResponseRedirect(reverse('index'))
@@ -149,21 +149,26 @@ def move(request, id):
                 key_list[key] = 1
 
                 # Convert key list back to string
-                game.keys = "".join(list(map(str,key_list)))
+                game.keys = "".join(list(map(str, key_list)))
 
         # Check if game is won and update timestamp
         if index == 100 and game.keys == "1111111111":
             game.timestamp_won = timezone.now()
 
         # Convert squares list back to string
-        game.squares = "".join(list(map(str,type_list)))
+        game.squares = "".join(list(map(str, type_list)))
 
         # Save game
         game.timestamp_save = timezone.now()
         game.save()
 
     # Return new position data
-    return JsonResponse({"position": game.position, "type":game.squares[index-1], "keys":game.keys, "won":game.timestamp_won}, safe=False)
+    return JsonResponse({
+        "position": game.position,
+        "type": game.squares[index-1],
+        "keys": game.keys,
+        "won": game.timestamp_won
+        }, safe=False)
 
 
 # Login a user
